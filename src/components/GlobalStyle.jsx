@@ -33,7 +33,7 @@ export const Gallery = styled.ul`
   margin-left: auto;
   margin-right: auto;
 `;
-export const Title = styled.ul`
+export const Title = styled.span`
 text-align: center;
 font-family: 'Times New Roman', Times, serif;
 font-weight: 600;
