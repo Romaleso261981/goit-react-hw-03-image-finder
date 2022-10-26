@@ -1,29 +1,49 @@
 import { Component } from 'react';
 import axios from 'axios';
-import { Gallery, ContactItem } from "./GlobalStyle";
+import { Gallery, ContactItem, Title } from "./GlobalStyle";
 
 axios.defaults.baseURL = "https://pixabay.com/api/";
 
 
 const ArticleList = ({ articles }) => (
   <Gallery>
-    {articles.map(({ previewURL, id, user }) => (
+    {articles.map(({ previewURL, id, user, webformatURL }) => (
       <ContactItem key={id}>
-        <img alt={user} src={previewURL} />
+        <img alt={user} src={webformatURL} />
+        <Title>{ user }</Title>
       </ContactItem>
     ))}
   </Gallery>
 );
 
 class App extends Component {
-  state = {
+    state = {
+    isLoading: true,
+    page: 2,
     articles: [],
+    total: 0, 
+    pages: 20,
+    error: '',
+    query: '',
+    showLargePic: false,
+    picData: {},
   };
+  
 
-  async componentDidMount() {
-    const response = await axios.get("?key=29683186-89d5b8f18ccbe7d45b5194d45&q=yellow+flowers&image_type=photo");
+  async componentDidMount(prevProps, prevState) {
+    
+        const {page} = this.state;
+
+    if ( page !== 1) {
+      try {
+        const response = await axios.get("?key=29683186-89d5b8f18ccbe7d45b5194d45&q=yellow+flowers&image_type=photo");
     console.log(response.data.hits);
     this.setState({ articles: response.data.hits });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
   }
 
   render() {
@@ -38,47 +58,6 @@ class App extends Component {
 
 export default App;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import { Component } from 'react';
 // import axios from 'axios';
 // import Notification from './Loader/Loader';
@@ -87,25 +66,9 @@ export default App;
 // axios.defaults.baseURL = "https://hn.algolia.com/api/v1";
 
 
-// export class App extends Component {
-//   state = {
-//     isLoading: true,
-//     page: 1,
-//     data: [],
-//     total: 0, 
-//     pages: 20,
-//     error: '',
-//     query: '',
-//     showLargePic: false,
-//     picData: {},
-//   };
 
 
-//   async componentDidMount() {
-//     const response = await axios.get("/search?query=react");
-//     console.log(response);
-//     this.setState({ data: response.data.hits });
-//   }
+
 //   // async componentDidUpdate(prevProps, prevState) {
 //   //   console.log(prevState);
 //   //   const { query, page } = this.state;

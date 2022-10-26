@@ -33,6 +33,14 @@ export const Gallery = styled.ul`
   margin-left: auto;
   margin-right: auto;
 `;
+export const Title = styled.ul`
+text-align: center;
+font-family: 'Times New Roman', Times, serif;
+font-weight: 600;
+font-size: xx-large;
+border: 1px solid whitesmoke;
+  
+`;
 
 export const ContactItem = styled.li`
   border-radius: 2px;
