@@ -1,22 +1,13 @@
 import { Component } from 'react';
 import axios from 'axios';
-import { Gallery, ContactItem } from './GlobalStyle';
 import { Button } from './Button/Button';
+import { ArticleList } from './ImageGallery/ImageGallery';
+import { SearchBar } from './Searchbar/Searchbar';
+import { Modal } from './Modal/Modal';
 import { AppStyled } from './AppStyle';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
-const KEY = '29683186-89d5b8f18ccbe7d45b5194d45'
-
-const ArticleList = ({ articles }) => (
-  <Gallery>
-    {articles.map(({ previewURL, id, user, webformatURL }) => (
-      <ContactItem key={id}>
-        <img alt={user} src={webformatURL} />
-        {/* <Title>{user}</Title> */}
-      </ContactItem>
-    ))}
-  </Gallery>
-);
+const KEY = '29683186-89d5b8f18ccbe7d45b5194d45';
 
 class App extends Component {
   state = {
@@ -46,9 +37,9 @@ class App extends Component {
         );
 
         const { data } = response;
-        const { total, hits} = data;
+        const { total, hits } = data;
 
-        if (query !== 0|| (page !== 1)) {
+        if (query !== 0 || page !== 1) {
           this.setState({
             articles: hits,
             total: total,
@@ -68,31 +59,38 @@ class App extends Component {
 
   setQuery = value => {
     this.setState({ query: value });
-    console.log(this.state.query);
   };
 
-  toggleLargeMode = () => {
-    console.log('toggleLargeMode');
+  toggleLargeMode = picData => {
+    this.setState(({ showLargePic }) => ({
+      showLargePic: !showLargePic,
+      picData,
+    }));
   };
 
-    handleLoadMore = () => {
-      this.setState(p => ({ page: p.page + 1 }));
-      console.log(this.state.page);
+  handleLoadMore = () => {
+    this.setState(p => ({ page: p.page + 1 }));
+    console.log(this.state.page);
   };
 
   render() {
-    const { articles, showBtn,} = this.state;
+    const { articles, showBtn, showLargePic, picData } = this.state;
+    console.log(picData);
     return (
       <AppStyled>
-        <div>
-          <input onSubmit={this.setQuery} />
-        </div>
-        <ArticleList articles={articles} />
-        {showBtn && <Button
-          onClick={e => {
-            this.handleLoadMore();
-          }}
-        />}
+        <SearchBar onSubmit={this.setQuery} />
+        <ArticleList
+          articles={articles}
+          toggleLargeMode={this.toggleLargeMode}
+        />
+        {showBtn && (
+          <Button
+            onClick={e => {
+              this.handleLoadMore();
+            }}
+          />
+        )}
+        {showLargePic && <Modal articles={picData} toggleLargeMode={this.toggleLargeMode } />}
       </AppStyled>
     );
   }
@@ -100,59 +98,6 @@ class App extends Component {
 
 export default App;
 
-//   // async componentDidUpdate(prevProps, prevState) {
-//   //   console.log(prevState);
-//   //   const { query, page } = this.state;
-//   //   const { query: prevQuery, page: prevPage } = prevState;
-
-//   if (query !== prevQuery || (page !== prevPage && page !== 1)) {
-//     try {
-//       this.setState({ isLoading: true });
-//       const data = await axios.get(
-//         `videos/?key=29683186-89d5b8f18ccbe7d45b5194d45&q=yellow+flowers`
-//       );
-//       console.log(data);
-//       const { total, hits } = data;
-
-//       const properStructHits = hits.map(
-//         ({ id, largeImageURL, webformatURL, tags }) => ({
-//           id,
-//           largeImageURL,
-//           webformatURL,
-//           tags,
-//         })
-//       );
-
-//       if (query !== prevQuery) {
-//         this.setState({
-//           data: [...properStructHits],
-//           total: total,
-//           isLoading: false,
-//         });
-//       } else {
-//         this.setState(p => ({
-//           data: [...p.data, ...properStructHits],
-//           isLoading: false,
-//         }));
-//       }
-//     } catch (error) {
-//       this.setState({ error: true, isLoading: false });
-//       console.log(error);
-//     }
-//   }
-// }
-
 //   handleLoadMore = () => {
 //     this.setState(p => ({ page: p.page + 1 }));
 //   };
-
-//   render() {
-//     const { data, isLoading, page, pages} = this.state;
-
-//     return (
-//       <>
-//         <input onSubmit={this.setQuery} />
-//         {data.length > 0 && (
-//           <ImageGalleryItem articles={data} />
-//         )}
-//         {isLoading && (<Notification />
