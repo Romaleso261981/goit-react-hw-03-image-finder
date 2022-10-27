@@ -14,7 +14,7 @@ export const Overlay = styled.div`
 `;
 
 export const Gallery = styled.div`
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  max-width: 100vw;
+  max-height: auto;
 `;
 
