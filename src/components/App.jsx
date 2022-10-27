@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import axios from 'axios';
+import { Notification } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { ArticleList } from './ImageGallery/ImageGallery';
 import { SearchBar } from './Searchbar/Searchbar';
@@ -11,13 +12,13 @@ const KEY = '29683186-89d5b8f18ccbe7d45b5194d45';
 
 class App extends Component {
   state = {
-    isLoading: true,
+    isLoading: false,
     page: 1,
     articles: [],
     total: 0,
     pages: 20,
     error: '',
-    query: '',
+    query: 'flowers',
     showLargePic: false,
     showBtn: false,
     picData: {},
@@ -26,10 +27,6 @@ class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state; 
     const { query: prevQuery, page: prevPage } = prevState; 
-
-    console.log(query);
-    console.log(prevQuery);
-    console.log(query !== prevQuery);
 
     if (query !== prevQuery) {
       try {
@@ -67,11 +64,6 @@ class App extends Component {
     console.log(this.state.query);
   };  
 
-  // handleSubmit = e => {
-  //   console.log(e.target.alements.search.value);
-  //   e.preventDefault();
-  //   this.setState({ page: 1, query: e.target.alements.search.value });
-  // };
 
   toggleLargeMode = picData => {
     this.setState(({ showLargePic }) => ({
@@ -86,10 +78,11 @@ class App extends Component {
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData } = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
+        {isLoading && <Notification />}
         <ArticleList
           articles={articles}
           toggleLargeMode={this.toggleLargeMode}
