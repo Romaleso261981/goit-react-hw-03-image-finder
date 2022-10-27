@@ -23,11 +23,15 @@ class App extends Component {
     picData: {},
   };
 
-  async componentDidMount() {
-    const { page, query } = this.state;
-    // const { query: prevQuery, page: prevPage } = prevState;
+  async componentDidUpdate(prevProps, prevState) {
+    const { query, page } = this.state; 
+    const { query: prevQuery, page: prevPage } = prevState; 
 
-    if (true) {
+    console.log(query);
+    console.log(prevQuery);
+    console.log(query !== prevQuery);
+
+    if (query !== prevQuery) {
       try {
         this.setState({
           isLoading: true,
@@ -58,8 +62,16 @@ class App extends Component {
   }
 
   setQuery = value => {
-    this.setState({ query: value });
-  };
+    console.log(value);
+    this.setState({ query: value, showBtn: false });
+    console.log(this.state.query);
+  };  
+
+  // handleSubmit = e => {
+  //   console.log(e.target.alements.search.value);
+  //   e.preventDefault();
+  //   this.setState({ page: 1, query: e.target.alements.search.value });
+  // };
 
   toggleLargeMode = picData => {
     this.setState(({ showLargePic }) => ({
@@ -75,7 +87,6 @@ class App extends Component {
 
   render() {
     const { articles, showBtn, showLargePic, picData } = this.state;
-    console.log(picData);
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
@@ -90,7 +101,9 @@ class App extends Component {
             }}
           />
         )}
-        {showLargePic && <Modal articles={picData} toggleLargeMode={this.toggleLargeMode } />}
+        {showLargePic && (
+          <Modal articles={picData} toggleLargeMode={this.toggleLargeMode} />
+        )}
       </AppStyled>
     );
   }

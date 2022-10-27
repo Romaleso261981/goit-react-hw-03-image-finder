@@ -1,7 +1,6 @@
 import { Gallery, Overlay} from './ModalStyle.js';
 
 export const Modal = ({ articles, toggleLargeMode }) => {
-    console.log(articles);
     return (
         <Overlay>
             <Gallery onClick={toggleLargeMode}>

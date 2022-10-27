@@ -1,52 +1,51 @@
 // import { Notification } from '../Loader/Loader';
-
-// export const Searchbar = ({isLoading}) => {
-//     return <div>
-//     <input />
-//     {isLoading && <Notification />}
-//    </div>;
-//   };
-  
-//   export default Searchbar;
-  
- 
-
 import { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import {SearchBarStyled, SearchForm, SearchInput, ButtonSearch} from './SearchbarStyle.js';
+import {
+  SearchBarStyled,
+  SearchForm,
+  SearchInput,
+  ButtonSearch,
+} from './SearchbarStyle.js';
 
 export class SearchBar extends Component {
-    render() {
-      return (
-        <SearchBarStyled>
-          <Formik
-            initialValues={{ search: '' }}
-            onSubmit={(values, actions) => {
+  render() {
+    return (
+      <SearchBarStyled>
+        <Formik
+          initialValues={{ search: '' }}
+          onSubmit={(values, actions) => {
             this.props.onSubmit(values.search);
+            console.log(values.search)
             actions.setSubmitting(false);
           }}
         >
-            {({ isSubmitting }) => (
+          {({ isSubmitting }) => (
             <SearchForm>
-                {isSubmitting && <div>Loading...</div>}
-                <ButtonSearch type="submit" className="button" disabled={isSubmitting}></ButtonSearch>
-                <SearchInput 
+              {isSubmitting && <div>Loading...</div>}
+              <SearchInput
                 name="search"
                 type="text"
                 autoComplete="off"
                 autoFocus
-                placeholder="Search images and photos" /> 
+                placeholder="Search images and photos"
+              />
+               <ButtonSearch
+                type="submit"
+                className="button"
+                disabled={isSubmitting}
+              ></ButtonSearch>
             </SearchForm>
-            )}
+          )}
         </Formik>
-        </SearchBarStyled>
-      );
-    }
-    }
+      </SearchBarStyled>
+    );
+  }
+}
 
 export default SearchBar;
 
-    SearchBar.propTypes = {
-        onSubmit: PropTypes.func.isRequired,
-    };
+// SearchBar.propTypes = {
+//     onSubmit: PropTypes.func.isRequired,
+// };
