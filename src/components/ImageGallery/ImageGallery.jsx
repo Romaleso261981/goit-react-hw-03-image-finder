@@ -1,16 +1,11 @@
-import { Gallery, ContactItem, Info } from './ImageGalleryStyle.js';
+import { Gallery, ContactItem} from './ImageGalleryStyle.js';
 
-export const ArticleList = ({ articles, toggleLargeMode, page,  }) => (
+export const ArticleList = ({ articles, toggleLargeMode }) => (
   <Gallery>
-    {articles.map(({ largeImageURL, id, user, previewURL, totalHits, page}) => (
+    {articles.map(({ largeImageURL, id, user, previewURL}) => (
       <ContactItem
         key={id}
       >
-        <Info>
-          <span>{totalHits}</span>
-          <span>{page}</span>
-          <span>{(Math.floor(totalHits / 20))}</span>
-        </Info>
         <img alt={user} src={previewURL} onClick={() => {
           toggleLargeMode(largeImageURL, user)
         }}/>

@@ -23,28 +23,28 @@ class App extends Component {
     totalHits: 0
   };
 
-  async componentDidMount() {
-    const { query, images } = this.state; 
-    try {
-      const response = await axios.get(
-        `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
-      );
-      const { data } = response;
-      const {hits } = data;
-      if (query !== 0) {
-        this.setState({
-          articles: hits,
-          showBtn: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async componentDidMount() {
+  //   const { query, images } = this.state; 
+  //   try {
+  //     const response = await axios.get(
+  //       `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
+  //     );
+  //     const { data } = response;
+  //     const {hits } = data;
+  //     if (query !== 0) {
+  //       this.setState({
+  //         articles: hits,
+  //         showBtn: true,
+  //       });
+  //     } else {
+  //       this.setState({
+  //         isLoading: false,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page, images} = this.state;
@@ -107,15 +107,12 @@ class App extends Component {
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading, page, totalHits } = this.state;
-    console.log(articles);
+    const { articles, showBtn, showLargePic, picData, isLoading} = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
         {isLoading && <Notification />}
         <ArticleList
-          page={page}
-          totalHits={totalHits}
           articles={articles}
           toggleLargeMode={this.toggleLargeMode}
         />

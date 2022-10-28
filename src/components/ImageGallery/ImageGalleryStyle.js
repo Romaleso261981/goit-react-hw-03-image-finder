@@ -17,8 +17,7 @@ export const Title = styled.span`
 text-align: center;
 font-family: 'Times New Roman', Times, serif;
 font-weight: 600;
-font-size: xx-large;
-border: 1px solid whitesmoke;
+font-size: small;
   
 `;
 export const Info = styled.span`
