@@ -23,28 +23,28 @@ class App extends Component {
     totalHits: 0
   };
 
-  // async componentDidMount() {
-  //   const { query, images } = this.state; 
-  //   try {
-  //     const response = await axios.get(
-  //       `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
-  //     );
-  //     const { data } = response;
-  //     const {hits } = data;
-  //     if (query !== 0) {
-  //       this.setState({
-  //         articles: hits,
-  //         showBtn: true,
-  //       });
-  //     } else {
-  //       this.setState({
-  //         isLoading: false,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  async componentDidMount() {
+    const { query, images } = this.state; 
+    try {
+      const response = await axios.get(
+        `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
+      );
+      const { data } = response;
+      const {hits } = data;
+      if (query !== 0) {
+        this.setState({
+          articles: hits,
+          showBtn: true,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page, images} = this.state;
@@ -61,8 +61,6 @@ class App extends Component {
 
         const { data} = response;
         const { hits, totalHits } = data;
-        console.log(Math.floor(totalHits / 20) > page);
-        console.log(query !==  0);
 
         if (query !==  0 || Math.floor(totalHits / 20) > page) {
           this.setState({

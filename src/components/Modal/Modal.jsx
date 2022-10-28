@@ -1,14 +1,37 @@
-import { Gallery, Overlay} from './ModalStyle.js';
+import { Component } from 'react';
+import { Gallery, Overlay, Img } from './ModalStyle.js';
 
-export const Modal = ({ articles, toggleLargeMode }) => {
+export class Modal extends Component {
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  };
+
+  handleKeyDown = event => {
+    if (event.code === 'Escape') {
+      this.props.toggleLargeMode();
+    }
+  };
+
+  handleBackdropClick = event => {
+    if (event.currentTarget !== event.target) {
+      this.props.toggleLargeMode();
+    }
+  };
+  render() {
     return (
-        <Overlay>
-            <Gallery onClick={toggleLargeMode}>
-            <img src={articles} alt='jngbfgb'></img>
+      <Overlay>
+        <Gallery onClick={this.handleBackdropClick}>
+          <Img src={this.props.articles} alt='jngbfgb'></Img>
         </Gallery>
-        </Overlay>
+      </Overlay>
         
     )
+  }
 };
 
 export default Modal;

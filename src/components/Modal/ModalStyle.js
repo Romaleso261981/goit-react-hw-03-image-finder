@@ -17,4 +17,9 @@ export const Gallery = styled.div`
   max-width: 100vw;
   max-height: auto;
 `;
+export const Img = styled.img`
+ display: block;
+ width: 100%;
+ height: auto;
+`;
 
