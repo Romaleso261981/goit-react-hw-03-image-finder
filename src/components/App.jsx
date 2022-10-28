@@ -15,7 +15,7 @@ class App extends Component {
     isLoading: false,
     articles: [],
     images: 20,
-    query: 'feta',
+    query: '',
     showLargePic: false,
     showBtn: false,
     picData: {},
@@ -46,12 +46,13 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
+   console.log("componentDidUpdate");
     const { query,images } = this.state; 
     console.log(query);
-    const { query: prevQuery} = prevState; 
+    const { query: prevQuery, images: prevImages} = prevState; 
     console.log(prevQuery);
 
-    if (query !== prevQuery) {
+    if (query !== prevQuery || images !== prevImages ) {
       try {
         this.setState({
           isLoading: true,
@@ -63,7 +64,7 @@ class App extends Component {
         const { data } = response;
         const { hits } = data;
 
-        if (query !== 0) {
+        if (query !==  0) {
           this.setState({
             articles: hits,
             isLoading: false,
@@ -94,10 +95,11 @@ class App extends Component {
 
   handleLoadMore = () => {
     this.setState(p => ({ images: p.images + 20 }));
+  
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading, images } = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
@@ -106,6 +108,7 @@ class App extends Component {
           articles={articles}
           toggleLargeMode={this.toggleLargeMode}
         />
+        <div>{ images }</div>
         {showBtn && (
           <Button
             onClick={e => {
