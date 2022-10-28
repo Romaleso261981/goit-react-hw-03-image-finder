@@ -13,11 +13,8 @@ const KEY = '29683186-89d5b8f18ccbe7d45b5194d45';
 class App extends Component {
   state = {
     isLoading: false,
-    page: 1,
     articles: [],
-    total: 0,
-    pages: 40,
-    error: '',
+    images: 20,
     query: 'feta',
     showLargePic: false,
     showBtn: false,
@@ -25,17 +22,16 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const { query, pages} = this.state; 
+    const { query, images} = this.state; 
     try {
       const response = await axios.get(
-        `?key=${KEY}&q=${query}&image_type=photo&per_page=${pages}`, 
+        `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
       );
       const { data } = response;
-      const { total, hits } = data;
+      const {hits } = data;
       if (query !== 0) {
         this.setState({
           articles: hits,
-          total: total,
           isLoading: false,
           showBtn: true,
         });
@@ -50,7 +46,7 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query, page, pages } = this.state; 
+    const { query,images } = this.state; 
     console.log(query);
     const { query: prevQuery} = prevState; 
     console.log(prevQuery);
@@ -61,16 +57,15 @@ class App extends Component {
           isLoading: true,
         });
         const response = await axios.get(
-          `?key=${KEY}&q=${query}&image_type=photo&per_page=${pages}`, 
+          `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
         );
 
         const { data } = response;
-        const { total, hits } = data;
+        const { hits } = data;
 
-        if (query !== 0 || page !== 1) {
+        if (query !== 0) {
           this.setState({
             articles: hits,
-            total: total,
             isLoading: false,
             showBtn: true,
           });
@@ -98,7 +93,7 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState(p => ({ pages: p.pages + 20 }));
+    this.setState(p => ({ images: p.images + 20 }));
   };
 
   render() {
@@ -127,7 +122,3 @@ class App extends Component {
 }
 
 export default App;
-
-//   handleLoadMore = () => {
-//     this.setState(p => ({ page: p.page + 1 }));
-//   };
