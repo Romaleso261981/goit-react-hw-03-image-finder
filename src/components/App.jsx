@@ -19,6 +19,7 @@ class App extends Component {
     showLargePic: false,
     showBtn: false,
     picData: {},
+    totalHits: 0
   };
 
   async componentDidMount() {
@@ -32,7 +33,6 @@ class App extends Component {
       if (query !== 0) {
         this.setState({
           articles: hits,
-          isLoading: false,
           showBtn: true,
         });
       } else {
@@ -46,11 +46,8 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-   console.log(prevProps);
-    const { query,images } = this.state; 
-    console.log(query);
+    const { query,images} = this.state; 
     const { query: prevQuery, images: prevImages} = prevState; 
-    console.log(prevQuery);
 
     if (query !== prevQuery || images !== prevImages ) {
       try {
@@ -61,18 +58,28 @@ class App extends Component {
           `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
         );
 
-        const { data } = response;
-        const { hits } = data;
+        const { data} = response;
+        const { hits, totalHits } = data;
+        console.log(data);
 
         if (query !==  0) {
           this.setState({
+            totalHits: totalHits,
             articles: hits,
             isLoading: false,
-            showBtn: true,
           });
         } else {
           this.setState({
             isLoading: false,
+          });
+        }
+        if (images <= totalHits) {
+          this.setState({
+            showBtn: true,
+          });
+        } else {
+          this.setState({
+            showBtn: false,
           });
         }
       } catch (error) {
@@ -95,11 +102,10 @@ class App extends Component {
 
   handleLoadMore = () => {
     this.setState(p => ({ images: p.images + 20 }));
-  
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading, images } = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
@@ -108,7 +114,6 @@ class App extends Component {
           articles={articles}
           toggleLargeMode={this.toggleLargeMode}
         />
-        <div>{ images }</div>
         {showBtn && (
           <Button
             onClick={e => {
