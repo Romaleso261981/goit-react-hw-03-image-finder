@@ -19,7 +19,8 @@ class App extends Component {
     showLargePic: false,
     showBtn: false,
     picData: {},
-    page: 1
+    page: 1,
+    totalHits: 0
   };
 
   async componentDidMount() {
@@ -106,12 +107,15 @@ class App extends Component {
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading, page, totalHits } = this.state;
+    console.log(articles);
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
         {isLoading && <Notification />}
         <ArticleList
+          page={page}
+          totalHits={totalHits}
           articles={articles}
           toggleLargeMode={this.toggleLargeMode}
         />
