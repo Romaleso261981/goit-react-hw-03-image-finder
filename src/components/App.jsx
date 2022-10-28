@@ -46,7 +46,7 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-   console.log("componentDidUpdate");
+   console.log(prevProps);
     const { query,images } = this.state; 
     console.log(query);
     const { query: prevQuery, images: prevImages} = prevState; 
