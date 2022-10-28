@@ -19,11 +19,11 @@ class App extends Component {
     showLargePic: false,
     showBtn: false,
     picData: {},
-    totalHits: 0
+    page: 1
   };
 
   async componentDidMount() {
-    const { query, images} = this.state; 
+    const { query, images } = this.state; 
     try {
       const response = await axios.get(
         `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
@@ -46,12 +46,12 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query,images} = this.state; 
-    const { query: prevQuery, images: prevImages} = prevState; 
+    const { query, page, images} = this.state; 
+    const { query: prevQuery, page: prevPage} = prevState; 
 
-    if (query !== prevQuery || images !== prevImages ) {
+    if (query !== prevQuery || page !== prevPage ) {
       try {
-        this.setState({
+        this.setState({ 
           isLoading: true,
         });
         const response = await axios.get(
@@ -60,9 +60,10 @@ class App extends Component {
 
         const { data} = response;
         const { hits, totalHits } = data;
-        console.log(data);
+        console.log(Math.floor(totalHits / 20) > page);
+        console.log(query !==  0);
 
-        if (query !==  0) {
+        if (query !==  0 || Math.floor(totalHits / 20) > page) {
           this.setState({
             totalHits: totalHits,
             articles: hits,
@@ -73,7 +74,7 @@ class App extends Component {
             isLoading: false,
           });
         }
-        if (images <= totalHits) {
+        if (page <= Math.floor(totalHits / 20)) {
           this.setState({
             showBtn: true,
           });
@@ -89,7 +90,7 @@ class App extends Component {
   }
 
   setQuery = value => {
-    this.setState({ query: value, showBtn: false });
+    this.setState({ query: value, showBtn: false, images: 20, page: 1});
   };  
 
 
@@ -101,7 +102,7 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState(p => ({ images: p.images + 20 }));
+    this.setState((p) => ({ page: p.page + 1, images: p.images + 20 }));
   };
 
   render() {
