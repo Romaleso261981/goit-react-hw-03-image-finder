@@ -46,7 +46,7 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query, page, images} = this.state; 
+    const { query, page, images} = this.state;
     const { query: prevQuery, page: prevPage} = prevState; 
 
     if (query !== prevQuery || page !== prevPage ) {
