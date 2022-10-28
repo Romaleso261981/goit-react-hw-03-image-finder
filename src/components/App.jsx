@@ -16,7 +16,7 @@ class App extends Component {
     page: 1,
     articles: [],
     total: 0,
-    pages: 20,
+    pages: 40,
     error: '',
     query: 'feta',
     showLargePic: false,
@@ -24,10 +24,35 @@ class App extends Component {
     picData: {},
   };
 
+  async componentDidMount() {
+    const { query, pages} = this.state; 
+    try {
+      const response = await axios.get(
+        `?key=${KEY}&q=${query}&image_type=photo&per_page=${pages}`, 
+      );
+      const { data } = response;
+      const { total, hits } = data;
+      if (query !== 0) {
+        this.setState({
+          articles: hits,
+          total: total,
+          isLoading: false,
+          showBtn: true,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async componentDidUpdate(prevProps, prevState) {
     const { query, page, pages } = this.state; 
     console.log(query);
-    const { query: prevQuery, page: prevPage } = prevState; 
+    const { query: prevQuery} = prevState; 
     console.log(prevQuery);
 
     if (query !== prevQuery) {
@@ -74,7 +99,6 @@ class App extends Component {
 
   handleLoadMore = () => {
     this.setState(p => ({ pages: p.pages + 20 }));
-    console.log(this.state.pages);
   };
 
   render() {
