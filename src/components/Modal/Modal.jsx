@@ -18,12 +18,11 @@ export class Modal extends Component {
   };
 
   handleBackdropClick = event => {
-    console.log(event);
     if (event.currentTarget === event.target) {
       this.props.toggleLargeMode();
     }
   };
-  
+
   render() {
     const { articles } = this.props;
     return (
