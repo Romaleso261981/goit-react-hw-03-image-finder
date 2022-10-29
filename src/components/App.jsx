@@ -13,6 +13,7 @@ class App extends Component {
     isLoading: false,
     articles: [],
     query: '',
+    images: 20,
     showLargePic: false,
     showBtn: false,
     picData: {},
