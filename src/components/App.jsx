@@ -37,6 +37,7 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
+
   }
 
   async componentDidUpdate(prevProps, prevState) {
@@ -54,6 +55,7 @@ class App extends Component {
             articles: [...prevState.articles, ...hits],
             isLoading: false,
           });
+          
         } else {
           this.setState({
             isLoading: false,
@@ -75,6 +77,7 @@ class App extends Component {
       } catch (error) {
         console.log(error);
       }
+      
     }
   }
 
@@ -93,6 +96,7 @@ class App extends Component {
     this.setState(p => ({ page: p.page + 1 }));
   };
 
+
   render() {
     const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
     return (
@@ -108,6 +112,7 @@ class App extends Component {
             onClick={e => {
               this.handleLoadMore();
             }}
+            
           />
         )}
         {showLargePic && (
