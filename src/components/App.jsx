@@ -3,8 +3,8 @@ import { Notification } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { ArticleList } from './ImageGallery/ImageGallery';
 import { SearchBar } from './Searchbar/Searchbar';
+import { fetchImages } from './ApiServise/ApiServise';
 import { Modal } from './Modal/Modal';
-import fetchImages from './ApiServise/ApiServise';
 import { AppStyled } from './AppStyle';
 import Notiflix from 'notiflix';
 
@@ -61,8 +61,6 @@ class App extends Component {
           });
         }
         if (page < Math.floor(totalHits / 12)) {
-          console.log(Math.floor(totalHits / 12));
-          console.log(page);
           this.setState({
             showBtn: true,
           });
