@@ -23,6 +23,7 @@ export class Modal extends Component {
       this.props.toggleLargeMode();
     }
   };
+  
   render() {
     const { articles } = this.props;
     return (
