@@ -4,6 +4,7 @@ import { Gallery, Overlay, Img } from './ModalStyle.js';
 export class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+    
   }
 
   componentWillUnmount() {
@@ -17,13 +18,13 @@ export class Modal extends Component {
   };
 
   handleBackdropClick = event => {
-    if (event.currentTarget !== event.target) {
-      this.props.toggleLargeMode();
-    }
+    console.log(event);
+    // if (event.currentTarget !== event.target) {
+    //   this.props.toggleLargeMode();
+    // }
   };
   render() {
     const { articles } = this.props;
-    console.log(articles);
     return (
       <Overlay>
         <Gallery onClick={this.handleBackdropClick}>

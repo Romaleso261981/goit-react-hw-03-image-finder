@@ -16,7 +16,6 @@ export class SearchBar extends Component {
           initialValues={{ search: '' }}
           onSubmit={(values, actions) => {
             this.props.onSubmit(values.search);
-            console.log(values.search)
             actions.setSubmitting(false);
           }}
         >

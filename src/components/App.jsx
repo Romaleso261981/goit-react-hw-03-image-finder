@@ -22,10 +22,8 @@ class App extends Component {
 
   async componentDidMount() {
     const { query, page } = this.state;
-    console.log(query, page);
     try {
       const { hits } = await fetchImages(query, page);
-      console.log(hits);
       if (query !== 0) {
         this.setState({
           articles: hits,
@@ -51,7 +49,6 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
-        console.log(hits);
         if (query !== 0 || Math.floor(totalHits / 20) > page) {
           this.setState({
             totalHits: totalHits,
@@ -64,8 +61,6 @@ class App extends Component {
           });
         }
         if (page <= Math.floor(totalHits / 12)) {
-          console.log(Math.floor(totalHits / 12));
-          console.log(page);
           this.setState({
             showBtn: true,
           });
