@@ -6,6 +6,7 @@ import { SearchBar } from './Searchbar/Searchbar';
 import { Modal } from './Modal/Modal';
 import fetchImages from './ApiServise/ApiServise';
 import { AppStyled } from './AppStyle';
+import Notiflix from 'notiflix';
 
 class App extends Component {
   state = {
@@ -48,22 +49,27 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
-        if (query !== 0 || Math.floor(totalHits / 20) > page) {
+        if (query === prevQuery) {
           this.setState({
-            totalHits: totalHits,
             articles: [...prevState.articles, ...hits],
             isLoading: false,
           });
         } else {
           this.setState({
             isLoading: false,
+            articles: [...hits],
           });
         }
-        if (page <= Math.floor(totalHits / 12)) {
+        if (page < Math.floor(totalHits / 12)) {
+          console.log(Math.floor(totalHits / 12));
+          console.log(page);
           this.setState({
             showBtn: true,
           });
         } else {
+          setTimeout(() => {
+            Notiflix.Notify.success('Unfortunately, the images have run out');
+          }, 1000);
           this.setState({
             showBtn: false,
           });
