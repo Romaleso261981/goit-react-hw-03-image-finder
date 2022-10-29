@@ -51,7 +51,7 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
-        if (query !== 0 || Math.floor(totalHits / 20) > page) {
+        if (query === prevPage) {
           this.setState({
             totalHits: totalHits,
             articles: [...prevState.articles, ...hits],
