@@ -11,7 +11,6 @@ class App extends Component {
   state = {
     isLoading: false,
     articles: [],
-    images: 20,
     query: '',
     showLargePic: false,
     showBtn: false,
