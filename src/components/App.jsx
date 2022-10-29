@@ -1,14 +1,11 @@
 import { Component } from 'react';
-import axios from 'axios';
 import { Notification } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { ArticleList } from './ImageGallery/ImageGallery';
 import { SearchBar } from './Searchbar/Searchbar';
 import { Modal } from './Modal/Modal';
+import fetchImages from './ApiServise/ApiServise';
 import { AppStyled } from './AppStyle';
-
-axios.defaults.baseURL = 'https://pixabay.com/api/';
-const KEY = '29683186-89d5b8f18ccbe7d45b5194d45';
 
 class App extends Component {
   state = {
@@ -20,17 +17,15 @@ class App extends Component {
     showBtn: false,
     picData: {},
     page: 1,
-    totalHits: 0
+    totalHits: 0,
   };
 
   async componentDidMount() {
-    const { query, images } = this.state; 
+    const { query, page } = this.state;
+    console.log(query, page);
     try {
-      const response = await axios.get(
-        `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
-      );
-      const { data } = response;
-      const {hits } = data;
+      const { hits } = await fetchImages(query, page);
+      console.log(hits);
       if (query !== 0) {
         this.setState({
           articles: hits,
@@ -47,25 +42,20 @@ class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query, page, images} = this.state;
-    const { query: prevQuery, page: prevPage} = prevState; 
+    const { query, page } = this.state;
+    const { query: prevQuery, page: prevPage } = prevState;
 
-    if (query !== prevQuery || page !== prevPage ) {
+    if (query !== prevQuery || page !== prevPage) {
       try {
-        this.setState({ 
+        this.setState({
           isLoading: true,
         });
-        const response = await axios.get(
-          `?key=${KEY}&q=${query}&image_type=photo&per_page=${images}`, 
-        );
-
-        const { data} = response;
-        const { hits, totalHits } = data;
-
-        if (query !==  0 || Math.floor(totalHits / 20) > page) {
+        const { hits, totalHits } = await fetchImages(query, page);
+        console.log(hits);
+        if (query !== 0 || Math.floor(totalHits / 20) > page) {
           this.setState({
             totalHits: totalHits,
-            articles: hits,
+            articles: [...prevState.articles, ...hits],
             isLoading: false,
           });
         } else {
@@ -73,7 +63,9 @@ class App extends Component {
             isLoading: false,
           });
         }
-        if (page <= Math.floor(totalHits / 20)) {
+        if (page <= Math.floor(totalHits / 12)) {
+          console.log(Math.floor(totalHits / 12));
+          console.log(page);
           this.setState({
             showBtn: true,
           });
@@ -89,9 +81,8 @@ class App extends Component {
   }
 
   setQuery = value => {
-    this.setState({ query: value, showBtn: false, images: 20, page: 1});
-  };  
-
+    this.setState({ query: value, showBtn: false, page: 1 });
+  };
 
   toggleLargeMode = picData => {
     this.setState(({ showLargePic }) => ({
@@ -101,11 +92,11 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState((p) => ({ page: p.page + 1, images: p.images + 20 }));
+    this.setState(p => ({ page: p.page + 1 }));
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading} = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />

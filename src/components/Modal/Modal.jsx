@@ -2,14 +2,13 @@ import { Component } from 'react';
 import { Gallery, Overlay, Img } from './ModalStyle.js';
 
 export class Modal extends Component {
-
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-  };
+  }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-  };
+  }
 
   handleKeyDown = event => {
     if (event.code === 'Escape') {
@@ -23,15 +22,16 @@ export class Modal extends Component {
     }
   };
   render() {
+    const { articles } = this.props;
+    console.log(articles);
     return (
       <Overlay>
         <Gallery onClick={this.handleBackdropClick}>
-          <Img src={this.props.articles} alt='jngbfgb'></Img>
+          <Img src={articles}></Img>
         </Gallery>
       </Overlay>
-        
-    )
+    );
   }
-};
+}
 
 export default Modal;
