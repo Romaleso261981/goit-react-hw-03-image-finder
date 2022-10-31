@@ -8,7 +8,7 @@ import {
   ButtonSearch,
 } from './SearchbarStyle.js';
 
-export class SearchBar extends Component {
+class SearchBar extends Component {
   render() {
     return (
       <SearchBarStyled>

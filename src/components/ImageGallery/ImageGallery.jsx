@@ -1,6 +1,6 @@
 import { Gallery, ContactItem} from './ImageGalleryStyle.js';
 
-export const ArticleList = ({ articles, toggleLargeMode }) => (
+const ArticleList = ({ articles, toggleLargeMode }) => (
   <Gallery>
     {articles.map(({ largeImageURL, id, tags, webformatURL}) => (
       <ContactItem

@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Gallery, Overlay, Img } from './ModalStyle.js';
 
-export class Modal extends Component {
+class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
     

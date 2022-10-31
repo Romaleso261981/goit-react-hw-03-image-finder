@@ -1,6 +1,6 @@
 import { RotatingLines } from 'react-loader-spinner';
 
-export const Notification = () => {
+const Notification = () => {
   return <RotatingLines
   strokeColor="grey"
   strokeWidth="5"

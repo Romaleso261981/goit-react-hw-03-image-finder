@@ -1,7 +1,7 @@
 import { ButtonLoad } from './ButtonStyle.js';
 import PropTypes from 'prop-types';
 
-export const Button = ({ onClick }) => {
+const Button = ({ onClick }) => {
   return (
   <ButtonLoad type="button" onClick={onClick}>Load more</ButtonLoad>
   );
@@ -10,5 +10,7 @@ export const Button = ({ onClick }) => {
 Button.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
+
+export default Button;
 
 

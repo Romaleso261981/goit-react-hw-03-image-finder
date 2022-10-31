@@ -1,11 +1,11 @@
 import { Component } from 'react';
-import { Notification } from './Loader/Loader';
-import { Button } from './Button/Button';
-import { ArticleList } from './ImageGallery/ImageGallery';
-import { SearchBar } from './Searchbar/Searchbar';
-import { fetchImages } from './ApiServise/ApiServise';
-import { Modal } from './Modal/Modal';
-import { AppStyled } from './AppStyle';
+import Notification from './Loader/Loader';
+import Button from './Button/Button';
+import ArticleList from './ImageGallery/ImageGallery';
+import SearchBar from './Searchbar/Searchbar';
+import fetchImages from './ApiServise/ApiServise';
+import Modal from './Modal/Modal';
+import AppStyled from './AppStyle';
 
 class App extends Component {
   state = {
@@ -23,12 +23,14 @@ class App extends Component {
     const { query, page, totalHits } = this.state;
     try {
       const { hits } = await fetchImages(query, page);
-      const normalHits = hits.map(({ id, largeImageURL, webformatURL, tags }) => ({
-        id,
-        largeImageURL,
-        webformatURL,
-        tags,
-      }))
+      const normalHits = hits.map(
+        ({ id, largeImageURL, webformatURL, tags }) => ({
+          id,
+          largeImageURL,
+          webformatURL,
+          tags,
+        })
+      );
       this.setState({
         articles: [...normalHits],
         showBtn: page < Math.floor(totalHits / 12),
@@ -49,12 +51,14 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
-        const normalHits = hits.map(({ id, largeImageURL, webformatURL, tags }) => ({
-          id,
-          largeImageURL,
-          webformatURL,
-          tags,
-        }))
+        const normalHits = hits.map(
+          ({ id, largeImageURL, webformatURL, tags }) => ({
+            id,
+            largeImageURL,
+            webformatURL,
+            tags,
+          })
+        );
         if (query === prevQuery) {
           this.setState({
             totalHits: totalHits,
@@ -67,7 +71,6 @@ class App extends Component {
             articles: [...hits],
           });
         }
-        
       } catch (error) {
         console.log(error);
       }
