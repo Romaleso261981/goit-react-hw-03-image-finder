@@ -67,15 +67,7 @@ class App extends Component {
             articles: [...hits],
           });
         }
-        if (page < Math.floor(totalHits / 12)) {
-          this.setState({
-            showBtn: true,
-          });
-        } else {
-          this.setState({
-            showBtn: false,
-          });
-        }
+        
       } catch (error) {
         console.log(error);
       }
