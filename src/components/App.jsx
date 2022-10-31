@@ -24,9 +24,15 @@ class App extends Component {
     const { query, page, totalHits } = this.state;
     try {
       const { hits } = await fetchImages(query, page);
-      if (query !== 0) {
+      const normalHits = hits.map(({ id, largeImageURL, webformatURL, tags }) => ({
+        id,
+        largeImageURL,
+        webformatURL,
+        tags,
+      }))
+      if (query === "") {
         this.setState({
-          articles: hits,
+          articles: [...normalHits],
           showBtn: page < Math.floor(totalHits / 12),
         });
       } else {
@@ -49,10 +55,17 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
+        const normalHits = hits.map(({ id, largeImageURL, webformatURL, tags }) => ({
+          id,
+          largeImageURL,
+          webformatURL,
+          tags,
+        }))
         if (query === prevQuery) {
+          console.log(hits);
           this.setState({
             totalHits: totalHits,
-            articles: [...prevState.articles, ...hits],
+            articles: [...prevState.articles, ...normalHits],
             isLoading: false,
           });
         } else {
