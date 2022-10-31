@@ -6,6 +6,7 @@ import SearchBar from './Searchbar/Searchbar';
 import fetchImages from './ApiServise/ApiServise';
 import Modal from './Modal/Modal';
 import AppStyled from './AppStyle';
+import Notiflix from 'notiflix';
 
 class App extends Component {
   state = {
@@ -17,6 +18,7 @@ class App extends Component {
     picData: {},
     page: 1,
     totalHits: 0,
+    error: false
   };
 
   async componentDidMount() {
@@ -59,11 +61,19 @@ class App extends Component {
             tags,
           })
         );
+        console.log(normalHits.length === 0);
+        console.log(normalHits);
         if (query === prevQuery) {
           this.setState({
             totalHits: totalHits,
             articles: [...prevState.articles, ...normalHits],
             isLoading: false,
+          });
+        } else if(normalHits.length === 0){
+          this.setState({
+            error: true,
+            isLoading: false,
+            articles: [],
           });
         } else {
           this.setState({
@@ -93,10 +103,11 @@ class App extends Component {
   };
 
   render() {
-    const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
+    const { articles, showBtn, showLargePic, picData, isLoading, error } = this.state;
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
+        {error && Notiflix.Notify.failure("Нажаль по вашому запиту нічого незнайденно") }
         {isLoading && <Notification />}
         <ArticleList
           articles={articles}
