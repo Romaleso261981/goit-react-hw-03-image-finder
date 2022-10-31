@@ -6,7 +6,6 @@ import { SearchBar } from './Searchbar/Searchbar';
 import { fetchImages } from './ApiServise/ApiServise';
 import { Modal } from './Modal/Modal';
 import { AppStyled } from './AppStyle';
-// import Notiflix from 'notiflix';
 
 class App extends Component {
   state = {
