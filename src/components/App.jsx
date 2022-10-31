@@ -13,22 +13,21 @@ class App extends Component {
     isLoading: false,
     articles: [],
     query: '',
-    images: 20,
     showLargePic: false,
-    showBtn: false,
+    showBtn: true,
     picData: {},
     page: 1,
     totalHits: 0,
   };
 
   async componentDidMount() {
-    const { query, page } = this.state;
+    const { query, page, totalHits } = this.state;
     try {
       const { hits } = await fetchImages(query, page);
       if (query !== 0) {
         this.setState({
           articles: hits,
-          showBtn: true,
+          showBtn: page < Math.floor(totalHits / 12),
         });
       } else {
         this.setState({
@@ -38,7 +37,6 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
-
   }
 
   async componentDidUpdate(prevProps, prevState) {
@@ -51,13 +49,12 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
-        if (query === prevPage) {
+        if (query === prevQuery) {
           this.setState({
             totalHits: totalHits,
             articles: [...prevState.articles, ...hits],
             isLoading: false,
           });
-          
         } else {
           this.setState({
             isLoading: false,
@@ -76,7 +73,6 @@ class App extends Component {
       } catch (error) {
         console.log(error);
       }
-      
     }
   }
 
@@ -95,7 +91,6 @@ class App extends Component {
     this.setState(p => ({ page: p.page + 1 }));
   };
 
-
   render() {
     const { articles, showBtn, showLargePic, picData, isLoading } = this.state;
     return (
@@ -111,7 +106,6 @@ class App extends Component {
             onClick={e => {
               this.handleLoadMore();
             }}
-            
           />
         )}
         {showLargePic && (
