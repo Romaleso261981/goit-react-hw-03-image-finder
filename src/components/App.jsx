@@ -14,7 +14,7 @@ class App extends Component {
     articles: [],
     query: '',
     showLargePic: false,
-    showBtn: true,
+    showBtn: false,
     picData: {},
     page: 1,
     totalHits: 0,
@@ -22,9 +22,9 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const { query, page, totalHits } = this.state;
+    const { query, page} = this.state;
     try {
-      const { hits } = await fetchImages(query, page);
+      const { hits, totalHits } = await fetchImages(query, page);
       const normalHits = hits.map(
         ({ id, largeImageURL, webformatURL, tags }) => ({
           id,
@@ -33,7 +33,9 @@ class App extends Component {
           tags,
         })
       );
+      console.log(page < Math.floor(totalHits / 12));
       this.setState({
+        totalHits: totalHits,
         articles: [...normalHits],
         showBtn: page < Math.floor(totalHits / 12),
         isLoading: false,
@@ -61,23 +63,22 @@ class App extends Component {
             tags,
           })
         );
-        console.log(normalHits.length === 0);
-        console.log(normalHits);
+      this.setState({
+        totalHits: totalHits,
+        showBtn: page < Math.floor(totalHits / 12),
+        isLoading: false,
+      });
         if (query === prevQuery) {
           this.setState({
-            totalHits: totalHits,
             articles: [...prevState.articles, ...normalHits],
-            isLoading: false,
           });
         } else if(normalHits.length === 0){
           this.setState({
-            error: true,
             isLoading: false,
             articles: [],
           });
         } else {
           this.setState({
-            isLoading: false,
             articles: [...hits],
           });
         }
