@@ -29,16 +29,11 @@ class App extends Component {
         webformatURL,
         tags,
       }))
-      if (query === "") {
-        this.setState({
-          articles: [...normalHits],
-          showBtn: page < Math.floor(totalHits / 12),
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-        });
-      }
+      this.setState({
+        articles: [...normalHits],
+        showBtn: page < Math.floor(totalHits / 12),
+        isLoading: false,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +56,6 @@ class App extends Component {
           tags,
         }))
         if (query === prevQuery) {
-          console.log(hits);
           this.setState({
             totalHits: totalHits,
             articles: [...prevState.articles, ...normalHits],
