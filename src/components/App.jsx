@@ -107,7 +107,7 @@ class App extends Component {
     return (
       <AppStyled>
         <SearchBar onSubmit={this.setQuery} />
-        {error && Notiflix.Notify.failure("Нажаль по вашому запиту нічого незнайденно") }
+        {error && !isLoading && Notiflix.Notify.failure("Нажаль по вашому запиту нічого незнайденно") }
         {isLoading && <Notification />}
         <ArticleList
           articles={articles}
