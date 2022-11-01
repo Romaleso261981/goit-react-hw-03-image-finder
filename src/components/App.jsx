@@ -33,7 +33,6 @@ class App extends Component {
           tags,
         })
       );
-      console.log(page < Math.floor(totalHits / 12));
       this.setState({
         totalHits: totalHits,
         articles: [...normalHits],
@@ -55,6 +54,14 @@ class App extends Component {
           isLoading: true,
         });
         const { hits, totalHits } = await fetchImages(query, page);
+        if (!hits.length) {
+          this.setState({
+            isLoading: false,
+            articles: [],
+            error: true
+          });
+          return
+        } 
         const normalHits = hits.map(
           ({ id, largeImageURL, webformatURL, tags }) => ({
             id,
@@ -72,11 +79,6 @@ class App extends Component {
           this.setState({
             articles: [...prevState.articles, ...normalHits],
           });
-        } else if(normalHits.length === 0){
-          this.setState({
-            isLoading: false,
-            articles: [],
-          });
         } else {
           this.setState({
             articles: [...hits],
@@ -84,6 +86,10 @@ class App extends Component {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        this.setState({
+          isLoading: false
+        });
       }
     }
   }
